@@ -156,7 +156,7 @@ if __name__ == '__main__':
     mutex = asyncio.Lock()
 
     scheduler = AsyncIOScheduler()
-    scheduler.add_job(game_over, 'cron', hour=0, minute=7)
+    scheduler.add_job(game_over, 'cron', hour=0, minute=0)
     scheduler.start()
 
     bot.run(os.environ['LESEMANTLE_BOT_TOKEN'])
