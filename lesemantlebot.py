@@ -14,6 +14,7 @@ from collections import namedtuple
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 ADMIN_ROLE = "LeSemantleBotAdmin"
+WORD_FILE = 'word.txt'
 MAX_HISTORY = 20
 
 Result = namedtuple('Result', ['word', 'try_number', 'temperature', 'points'])
@@ -30,6 +31,18 @@ bot = commands.Bot(
 )
 
 
+def save_word(word):
+    f = open(WORD_FILE, 'w')
+    f.write(word)
+    f.close()
+
+
+def restore_word():
+    f = open(WORD_FILE, 'r')
+    word = f.read()
+    f.close()
+    return word
+
 async def game_over():
     global bot
     global guesses
@@ -40,6 +53,7 @@ async def game_over():
             await bot.get_channel(chan).send(f'Partie terminée ! Le mot à deviner était `{word_to_guess}`')
         await bot.change_presence(activity=None)
         word_to_guess = lexique[random.randrange(0, len(lexique))][0]
+        save_word(word_to_guess)
         guesses = dict()
         guessed = dict()
         logger.info(f'Le nouveau mot à deviner est: {word_to_guess}')
@@ -149,7 +163,11 @@ if __name__ == '__main__':
     # initialize global
     guesses = dict()
     guessed = dict()
-    word_to_guess = lexique[random.randrange(0, len(lexique))][0]
+    if not os.path.exists(WORD_FILE):
+        word_to_guess = lexique[random.randrange(0, len(lexique))][0]
+        save_word(word_to_guess)
+    else:
+        word_to_guess = restore_word()
     logger.info(f'Le mot à deviner est: {word_to_guess}')
 
     # multithreading

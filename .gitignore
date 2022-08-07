@@ -3,3 +3,4 @@ venv
 *.bin
 *.tsv
 token.sh
+word.txt
