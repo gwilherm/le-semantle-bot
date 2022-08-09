@@ -43,6 +43,11 @@ def restore_word():
     f.close()
     return word
 
+
+def random_word():
+    return lexique[random.randrange(0, len(lexique))][0]
+
+
 async def game_over():
     global bot
     global guesses
@@ -52,7 +57,7 @@ async def game_over():
         for chan in guesses.keys():
             await bot.get_channel(chan).send(f'Partie terminée ! Le mot à deviner était `{word_to_guess}`')
         await bot.change_presence(activity=None)
-        word_to_guess = lexique[random.randrange(0, len(lexique))][0]
+        word_to_guess = random_word()
         save_word(word_to_guess)
         guesses = dict()
         guessed = dict()
@@ -148,23 +153,24 @@ if __name__ == '__main__':
     # add ch to logger
     logger.addHandler(ch)
 
+    # load the model
+    model = KeyedVectors.load_word2vec_format(os.environ['WORD2VEC_MODEL'], binary=True, unicode_errors="ignore")
+
     # load the dictionary
     csv_reader = csv.reader(open(os.environ['LEXIQUE_CSV']), delimiter='\t')
     lexique = list(filter(lambda c: ((c[3] == 'NOM' or c[3][:3] == 'ADJ' or c[3] == 'VER') and
                                      (c[4] == '' or c[4] == 'm') and
                                      (c[5] == '' or c[5] == 's') and
                                      (float(c[6]) >= 1.0) and
-                                     (c[10] == '' or c[10][:3] == 'inf')),
+                                     (c[10] == '' or c[10][:3] == 'inf') and
+                                     (c[0] in model.key_to_index)),
                           csv_reader))
-
-    # load the model
-    model = KeyedVectors.load_word2vec_format(os.environ['WORD2VEC_MODEL'], binary=True, unicode_errors="ignore")
 
     # initialize global
     guesses = dict()
     guessed = dict()
     if not os.path.exists(WORD_FILE):
-        word_to_guess = lexique[random.randrange(0, len(lexique))][0]
+        word_to_guess = random_word()
         save_word(word_to_guess)
     else:
         word_to_guess = restore_word()
