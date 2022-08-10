@@ -158,7 +158,7 @@ if __name__ == '__main__':
 
     # load the dictionary
     csv_reader = csv.reader(open(os.environ['LEXIQUE_CSV']), delimiter='\t')
-    lexique = list(filter(lambda c: ((c[3] == 'NOM' or c[3][:3] == 'ADJ' or c[3] == 'VER') and
+    lexique = list(filter(lambda c: ((c[3] == 'NOM' or c[3] == 'ADJ' or c[3] == 'VER') and
                                      (c[4] == '' or c[4] == 'm') and
                                      (c[5] == '' or c[5] == 's') and
                                      (float(c[6]) >= 1.0) and
