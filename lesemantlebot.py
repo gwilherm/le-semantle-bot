@@ -179,7 +179,7 @@ if __name__ == '__main__':
     # multithreading
     mutex = asyncio.Lock()
 
-    scheduler = AsyncIOScheduler()
+    scheduler = AsyncIOScheduler(timezone='Europe/Paris')
     scheduler.add_job(game_over, 'cron', hour=0, minute=0)
     scheduler.start()
 
