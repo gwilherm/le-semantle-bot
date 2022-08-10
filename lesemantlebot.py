@@ -92,7 +92,7 @@ async def guess(context, *args):
                         await bot.change_presence(activity=discord.Activity(name=f'{number_of_wins} gagnants aujourd\'hui.',
                                                                             type=discord.ActivityType.watching))
                     else:
-                        await context.send(f'Trop tard, le mot a déjà été trouvé par {context.author.name} !')
+                        await context.send(f'Trop tard, le mot a déjà été trouvé par {guessed[context.channel.id].name} !')
                 else:
                     rank = model.rank(word_to_guess, proposition)
 
