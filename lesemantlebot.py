@@ -13,7 +13,6 @@ from collections import OrderedDict
 from collections import namedtuple
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-ADMIN_ROLE = "LeSemantleBotAdmin"
 WORD_FILE = 'word.txt'
 MAX_HISTORY = 20
 
@@ -119,16 +118,6 @@ async def guess(context, *args):
 @bot.event
 async def on_message_edit(before, after):
     await bot.process_commands(after)
-
-
-@bot.command(help='Disconnect the bot.')
-async def bye(context):
-    logger.info('Handle quit')
-    if ADMIN_ROLE in list(map(lambda r: r.name, context.author.roles)):
-        await context.channel.send('Bye.')
-        await bot.close()
-    else:
-        logger.warning(f'Member {context.author.name} not allowed to run this command.')
 
 
 @bot.event
