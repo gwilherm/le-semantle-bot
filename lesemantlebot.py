@@ -75,7 +75,7 @@ def format_result(result: Result):
 async def guess(context, *args):
     async with mutex:
         if len(args) > 0:
-            proposition = args[0]
+            proposition = args[0].lower()
 
             if context.channel.id not in guesses:
                 guesses[context.channel.id] = dict()
