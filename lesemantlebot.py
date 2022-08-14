@@ -71,6 +71,21 @@ def format_result(result: Result):
     return result_str
 
 
+def get_emoji(points):
+    if points <= 0:
+        return '\N{Freezing Face}'
+    elif points <= 900:
+        return '\N{Smiling Face with Sunglasses}'
+    elif points <= 989:
+        return '\N{Overheated Face}'
+    elif points <= 998:
+        return '\N{Fire}'
+    elif points == 999:
+        return '\N{Face Screaming In Fear}'
+    elif points >= 1000:
+        return '\N{Face with Party Horn and Party Hat}'
+
+
 @bot.command(help='Try your word', aliases=['g'])
 async def guess(context, *args):
     async with mutex:
@@ -110,7 +125,9 @@ async def guess(context, *args):
                 await context.send(history_str)
 
                 result_str = '```\n' + format_result(result) + '\n```'
-                await context.send(result_str)
+                result_msg = await context.send(result_str)
+
+                await result_msg.add_reaction(get_emoji(points))
             except KeyError:
                 await context.send(f'Je ne comprends pas `{proposition}`')
 
