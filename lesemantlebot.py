@@ -104,15 +104,15 @@ async def guess(context, *args):
 
                 result_str = '```\n' + format_result(result) + '\n```'
                 await context.send(result_str)
+
+                history_str = '```\n'
+                od = OrderedDict(sorted(guesses[context.channel.id].items()))
+                for k, v in list(od.items())[:MAX_HISTORY]:
+                    history_str += format_result(Result(*v))
+                history_str += '\n```'
+                await context.send(history_str)
             except KeyError:
                 await context.send(f'Je ne comprends pas `{proposition}`')
-
-            history_str = '```\n'
-            od = OrderedDict(sorted(guesses[context.channel.id].items()))
-            for k, v in list(od.items())[:MAX_HISTORY]:
-                history_str += format_result(Result(*v))
-            history_str += '\n```'
-            await context.send(history_str)
 
 
 @bot.event
