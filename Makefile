@@ -26,9 +26,11 @@ discord-token:
 	@[ -f "token.sh" ]|| { \
 		prompt="Please paste your discord bot token: "; \
 		if command -v whiptail &> /dev/null; then \
-			token=$$(whiptail --inputbox ${{prompt}} 10 77 --title "Token" 3>&1 1>&2 2>&3); \
+			token=$$(whiptail --inputbox "$${prompt}" 10 77 --title "Token" 3>&1 1>&2 2>&3); \
 		else \
 			read -p "$${prompt}" token; \
 		fi; \
-		echo export LESEMANTLE_BOT_TOKEN=\"$${token}\" > token.sh; \
+		if [ -n "$${token}" ]; then \
+			echo export LESEMANTLE_BOT_TOKEN=\"$${token}\" > token.sh; \
+		fi \
 	}
