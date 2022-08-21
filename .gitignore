@@ -1,6 +1,7 @@
 *~
 venv
+__pycache__
 *.bin
 *.tsv
-token.sh
 word.txt
+history.json
