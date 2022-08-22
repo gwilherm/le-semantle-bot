@@ -48,6 +48,7 @@ def restore_history():
 
 def game_over():
     global logger
+    global day_num
     global history
     global word_to_guess
 
