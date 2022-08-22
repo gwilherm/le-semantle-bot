@@ -129,10 +129,10 @@ def score():
     global day_num
 
     form = request.form
-    logger.info(f'form: {form}')
-    word = form['word']
 
+    word = None
     try:
+        word = form['word']
         if word == word_to_guess:
             rank = 0
             solvers += 1
@@ -145,7 +145,11 @@ def score():
 
         result = Score(None, day_num, percentile, score, solvers)
     except KeyError:
-        result = Score(f'Je ne connais pas le mot <i>{word}</i>', day_num, None, None, solvers)
+        if word is not None and word != '':
+            error_str = f'Je ne connais pas le mot <i>{word}</i>.'
+        else:
+            error_str = 'Je ne connais pas ce mot.'
+        result = Score(error_str, day_num, None, None, solvers)
 
     return convert_namedtuple_to_dict(result)
 
