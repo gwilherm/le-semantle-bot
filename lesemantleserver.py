@@ -138,7 +138,7 @@ def score():
         else:
             rank = model.rank(word_to_guess, word)
 
-        score = model.similarity(word, word_to_guess) * 100
+        score = model.similarity(word, word_to_guess)
         
         percentile = 1000 - rank if rank <= 1000 else None
 
