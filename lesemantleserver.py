@@ -121,15 +121,15 @@ if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
     scheduler.start()
 
 
-@app.route('/score', methods=['GET'])
+@app.route('/score', methods=['POST'])
 def score():
     global logger
     global solvers
     global day_num
 
-    args = request.args
-    logger.info(f'args: {args}')
-    word = args['word']
+    form = request.form
+    logger.info(f'form: {form}')
+    word = form['word']
 
     try:
         if word == word_to_guess:
