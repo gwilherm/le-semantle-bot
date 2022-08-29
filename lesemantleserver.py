@@ -114,6 +114,7 @@ solvers = 0
 day_num = len(history)
 
 app = Flask(__name__)
+app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
 
 if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
     scheduler = BackgroundScheduler(timezone='Europe/Paris')
@@ -147,6 +148,30 @@ def score():
         result = Score(f'Je ne connais pas le mot <i>{word}</i>', day_num, None, None, solvers)
 
     return convert_namedtuple_to_dict(result)
+
+
+@app.route('/nearby', methods=['POST'])
+def nearby():
+    global logger
+    global solvers
+    global day_num
+
+    form = request.form
+
+    word = None
+    try:
+        word = form['word']
+        if word == word_to_guess:
+            result = []
+            top999 = model.most_similar(word, topn=999)
+            for rank,w in enumerate([(word, 1.0), *top999]):
+                result.append((w[0], 1000 - rank, float(w[1] * 100)))
+        else:
+            result = ''
+    except KeyError:
+        result = ''
+
+    return result
 
 
 @app.route('/stats', methods=['GET'])
