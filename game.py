@@ -110,10 +110,6 @@ class Game:
         return Stats(self.day_num, self.solvers)._asdict()
 
 
-    def history(self):
-        return self.history
-
-
     def game_over(self):
         self.history[0] = [self.day_num, self.word_to_guess, self.solvers]
         self.day_num += 1

@@ -75,4 +75,4 @@ def stats():
 
 @app.route('/history', methods=['GET'])
 def hist():
-    return game.history()
+    return game.history
