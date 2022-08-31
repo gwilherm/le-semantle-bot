@@ -13,8 +13,13 @@ from collections import OrderedDict
 from collections import namedtuple
 from apscheduler.schedulers.background import BackgroundScheduler
 
-WORD_FILE = 'word.txt'
-HIST_FILE = 'history.json'
+
+APP_STORAGE = os.environ['APP_STORAGE']
+WORD2VEC_MODEL = os.path.join(APP_STORAGE, os.environ['WORD2VEC_MODEL'])
+LEXIQUE_CSV    = os.path.join(APP_STORAGE, os.environ['LEXIQUE_CSV'])
+WORD_FILE = os.path.join(APP_STORAGE, 'word.txt')
+HIST_FILE = os.path.join(APP_STORAGE, 'history.json')
+
 
 Stats = namedtuple('Stats', ['num', 'solvers'])
 Score = namedtuple('Score', ['error', 'num', 'percentile', 'score', 'solvers'])
@@ -84,10 +89,10 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 # load the model
-model = KeyedVectors.load_word2vec_format(os.environ['WORD2VEC_MODEL'], binary=True, unicode_errors="ignore")
+model = KeyedVectors.load_word2vec_format(WORD2VEC_MODEL, binary=True, unicode_errors="ignore")
 
 # load the dictionary
-csv_reader = csv.reader(open(os.environ['LEXIQUE_CSV']), delimiter='\t')
+csv_reader = csv.reader(open(LEXIQUE_CSV), delimiter='\t')
 lexique = list(filter(lambda c: ((c[3] == 'NOM' or c[3] == 'ADJ' or c[3] == 'VER') and
                                     (c[4] == '' or c[4] == 'm') and
                                     (c[5] == '' or c[5] == 's') and
