@@ -1,4 +1,4 @@
-export APP_STORAGE="/app/storage"
+export APP_STORAGE="${APP_DIR}/storage"
 export WORD2VEC_MODEL="frWac_no_postag_no_phrase_700_skip_cut50.bin"
 export LEXIQUE="Lexique383"
 export LEXIQUE_ZIP="${LEXIQUE}.zip"

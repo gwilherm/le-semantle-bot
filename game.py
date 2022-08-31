@@ -43,7 +43,7 @@ class Game:
 
     def start(self):
         scheduler = BackgroundScheduler(timezone='Europe/Paris')
-        scheduler.add_job(self.game_over, 'cron', hour=23, minute=50)
+        scheduler.add_job(self.game_over, 'cron', hour=0, minute=0)
         scheduler.start()
 
 

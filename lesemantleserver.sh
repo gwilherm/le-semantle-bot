@@ -1,12 +1,14 @@
 #!/bin/bash
 
+APP_DIR=$(dirname $(readlink -f $0))
 source dataset.sh
+
+[ -d ${APP_STORAGE} ]|| mkdir -p ${APP_STORAGE}
 
 if [[ "$1" == "dev" ]]
 then
     source ./venv/bin/activate
 
-    export APP_STORAGE="."
     export FLASK_DEBUG=1
     export FLASK_APP=lesemantleserver
 

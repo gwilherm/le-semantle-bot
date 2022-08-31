@@ -2,7 +2,4 @@
 venv/
 __pycache__/
 target/
-*.bin
-*.tsv
-word.txt
-history.json
+storage/
