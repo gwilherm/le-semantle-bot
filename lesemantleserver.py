@@ -58,12 +58,7 @@ def score():
 def nearby():
     form = request.form
 
-    word = None
-    try:
-        word = form['word']
-        result = game.nearby(word)
-    except KeyError:
-        result = ''
+    result = game.nearby(form.get('word'))
 
     return result
 
