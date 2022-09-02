@@ -95,12 +95,20 @@ class Game:
         return Score(error_str, self.day_num, percentile, score, self.solvers)
 
 
+    def top(self, word, topn):
+        result = []
+        top = self.model.most_similar(word, topn=topn)
+        for rank,w in enumerate([(word, 1.0), *top]):
+            result.append((w[0], 1000 - rank, float(w[1] * 100)))
+
+        return result
+
+
     def nearby(self, word):
         if word == self.word_to_guess:
-            result = []
-            top999 = self.model.most_similar(word, topn=999)
-            for rank,w in enumerate([(word, 1.0), *top999]):
-                result.append((w[0], 1000 - rank, float(w[1] * 100)))
+            result = self.top(word, 999)
+        elif word == self.history[1][1]:
+            result = self.top(word, 100)
         else:
             result = ''
         return result
