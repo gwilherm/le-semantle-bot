@@ -7,67 +7,29 @@ import json
 import logging
 from flask import Flask
 from flask import request
-from gensim.models import KeyedVectors
+from flask import g, current_app
 
+from models import games
 
-from environ import *
-from game import Game
-
+from blueprints import vanilla
 
 # configure the logger
 logging.basicConfig(format='%(asctime)s - %(name)s::%(funcName)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-# load the model
-model = KeyedVectors.load_word2vec_format(WORD2VEC_MODEL, binary=True, unicode_errors="ignore")
-
-# load the dictionary
-csv_reader = csv.reader(open(LEXIQUE_CSV), delimiter='\t')
-lexique = list(filter(lambda c: ((c[3] == 'NOM' or c[3] == 'ADJ' or c[3] == 'VER') and
-                                    (c[4] == '' or c[4] == 'm') and
-                                    (c[5] == '' or c[5] == 's') and
-                                    (float(c[6]) >= 1.0) and
-                                    (c[10] == '' or c[10][:3] == 'inf') and
-                                    (c[0] in model.key_to_index)),
-                        csv_reader))
-
-game = Game(lexique, model)
 
 app = Flask(__name__)
 app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
 
+
 if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
-    game.start()
+    games['main'].start()
 
 
-def convert_namedtuple_to_dict(nt):
-    return dict(filter(lambda item: item[1] is not None, nt._asdict().items()))
+@app.route('/features', methods=['GET'])
+def features():
+    return list(app.blueprints.keys())
 
 
-@app.route('/score', methods=['POST'])
-def score():
-    form = request.form
-
-    result = game.score(form.get('word'))
-
-    return convert_namedtuple_to_dict(result)
-
-
-@app.route('/nearby', methods=['POST'])
-def nearby():
-    form = request.form
-
-    result = game.nearby(form.get('word'))
-
-    return result
-
-
-@app.route('/stats', methods=['GET'])
-def stats():
-    return game.stats()
-
-
-@app.route('/history', methods=['GET'])
-def hist():
-    return game.history
+app.register_blueprint(vanilla)

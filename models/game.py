@@ -9,8 +9,7 @@ from collections import namedtuple
 from gensim.models import KeyedVectors
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from environ import *
-
+from utils import env
 
 Stats = namedtuple('Stats', ['num', 'solvers'])
 Score = namedtuple('Score', ['error', 'num', 'percentile', 'score', 'solvers'])
@@ -24,14 +23,14 @@ class Game:
         self.lexique = lexique
         self.model = model
 
-        if not os.path.exists(WORD_FILE):
+        if not os.path.exists(env.WORD_FILE):
             self.random_word()
             self.save_word()
         else:
             self.restore_word()
         self.logger.info(f'Le mot à deviner est: {self.word_to_guess}')
 
-        if not os.path.exists(HIST_FILE):
+        if not os.path.exists(env.HIST_FILE):
             self.history = [[0, 0, '']]
         else:
             self.restore_history()
@@ -48,12 +47,12 @@ class Game:
 
 
     def save_word(self):
-        with open(WORD_FILE, 'w') as f:
+        with open(env.WORD_FILE, 'w') as f:
             f.write(self.word_to_guess)
 
 
     def restore_word(self):
-        with open(WORD_FILE, 'r') as f:
+        with open(env.WORD_FILE, 'r') as f:
             self.word_to_guess = f.read()
 
 
@@ -62,12 +61,12 @@ class Game:
 
 
     def save_history(self):
-        with open(HIST_FILE, 'w') as f:
+        with open(env.HIST_FILE, 'w') as f:
             json.dump(self.history, f)
 
 
     def restore_history(self):
-        with open(HIST_FILE, 'r') as f:
+        with open(env.HIST_FILE, 'r') as f:
             self.history = json.load(f)
 
 
