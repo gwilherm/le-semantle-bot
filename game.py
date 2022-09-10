@@ -121,6 +121,7 @@ class Game:
     def game_over(self):
         self.history[0] = [self.day_num, self.word_to_guess, self.solvers]
         self.day_num += 1
+        self.solvers = 0
         self.history = [[self.day_num, '', 0], *self.history]
         self.save_history()
         self.random_word()
