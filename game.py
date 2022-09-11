@@ -79,12 +79,14 @@ class Game:
         if word is not None and word != '':
             try:
                 if word == self.word_to_guess:
+                    # with gensim rank of word with itself is 1 and similarity can be 0.99999994
+                    score = 1.0
                     rank = 0
                     self.solvers += 1
                 else:
+                    score = float(self.model.similarity(word, self.word_to_guess))
                     rank = self.model.rank(self.word_to_guess, word)
 
-                score = float(self.model.similarity(word, self.word_to_guess))
                 
                 percentile = 1000 - rank if rank <= 1000 else None
             except KeyError:
