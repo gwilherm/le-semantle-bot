@@ -3,9 +3,9 @@
 import os
 import logging
 from flask import Blueprint
-from flask import g, current_app
+from flask import request
 
-from models import games
+from models import main_game
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -13,7 +13,6 @@ logger.setLevel(logging.INFO)
 
 vanilla = Blueprint('vanilla', __name__)
 
-game = games['main']
 
 def convert_namedtuple_to_dict(nt):
     return dict(filter(lambda item: item[1] is not None, nt._asdict().items()))
@@ -23,7 +22,7 @@ def convert_namedtuple_to_dict(nt):
 def score():
     form = request.form
 
-    result = game.score(form.get('word'))
+    result = main_game.score(form.get('word'))
 
     return convert_namedtuple_to_dict(result)
 
@@ -32,16 +31,16 @@ def score():
 def nearby():
     form = request.form
 
-    result = game.nearby(form.get('word'))
+    result = main_game.nearby(form.get('word'))
 
     return result
 
 
 @vanilla.route('/stats', methods=['GET'])
 def stats():
-    return game.stats()
+    return main_game.stats()
 
 
 @vanilla.route('/history', methods=['GET'])
 def hist():
-    return game.history
+    return main_game.history

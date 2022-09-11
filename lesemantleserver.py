@@ -9,9 +9,9 @@ from flask import Flask
 from flask import request
 from flask import g, current_app
 
-from models import games
+from models import main_game
 
-from blueprints import vanilla
+from blueprints import *
 
 # configure the logger
 logging.basicConfig(format='%(asctime)s - %(name)s::%(funcName)s - %(levelname)s - %(message)s')
@@ -24,7 +24,7 @@ app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
 
 
 if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
-    games['main'].start()
+    main_game.start()
 
 
 @app.route('/features', methods=['GET'])
@@ -33,3 +33,4 @@ def features():
 
 
 app.register_blueprint(vanilla)
+app.register_blueprint(side_game)

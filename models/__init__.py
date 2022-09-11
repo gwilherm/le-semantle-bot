@@ -4,6 +4,7 @@ from gensim.models import KeyedVectors
 
 from utils import env
 from .game import Game
+from .maingame import MainGame
 
 # load the model
 model = KeyedVectors.load_word2vec_format(env.WORD2VEC_MODEL, binary=True, unicode_errors="ignore")
@@ -19,5 +20,4 @@ lexique = list(filter(lambda c: ((c[3] == 'NOM' or c[3] == 'ADJ' or c[3] == 'VER
                         csv_reader))
 
 games = dict()
-games['main'] = Game(lexique, model)
-
+main_game = MainGame(lexique, model)
