@@ -1,5 +1,5 @@
 export APP_STORAGE="${APP_DIR}/storage"
-export WORD2VEC_MODEL="frWac_no_postag_no_phrase_700_skip_cut50.bin"
+export WORD2VEC_MODEL="frWac_no_postag_no_phrase_500_cbow_cut100.bin"
 export LEXIQUE="Lexique383"
 export LEXIQUE_ZIP="${LEXIQUE}.zip"
 export LEXIQUE_CSV="${LEXIQUE}.tsv"
