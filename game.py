@@ -32,7 +32,7 @@ class Game:
         self.logger.info(f'Le mot à deviner est: {self.word_to_guess}')
 
         if not os.path.exists(HIST_FILE):
-            self.history = [[0, '', 0]]
+            self.history = [[0, 0, '']]
         else:
             self.restore_history()
 
@@ -109,7 +109,7 @@ class Game:
     def nearby(self, word):
         if word == self.word_to_guess:
             result = self.top(word, 999)
-        elif word == self.history[1][1]:
+        elif word == self.history[1][2]:
             result = self.top(word, 100)
         else:
             result = ''
@@ -121,10 +121,10 @@ class Game:
 
 
     def game_over(self):
-        self.history[0] = [self.day_num, self.word_to_guess, self.solvers]
+        self.history[0] = [self.day_num, self.solvers, self.word_to_guess]
         self.day_num += 1
         self.solvers = 0
-        self.history = [[self.day_num, '', 0], *self.history]
+        self.history = [[self.day_num, 0, ''], *self.history]
         self.save_history()
         self.random_word()
         self.save_word()
