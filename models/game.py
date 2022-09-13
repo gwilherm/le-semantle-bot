@@ -19,7 +19,7 @@ class Game:
     def __init__(self, lexique, model):
         self.lexique = lexique
         self.model = model
-        self.date = datetime.now()
+        self.last_activity = datetime.now()
         self.random_word()
 
 
@@ -28,6 +28,7 @@ class Game:
 
 
     def score(self, word):
+        self.last_activity = datetime.now()
         error_str = None
         percentile = None
         score = None
