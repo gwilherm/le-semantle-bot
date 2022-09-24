@@ -42,3 +42,12 @@ def score(room):
     result = get_game(room).score(form.get('word'))
 
     return convert_namedtuple_to_dict(result)    
+
+
+@side_game.route('/<room>/nearby', methods=['POST'])
+def nearby(room):
+    form = request.form
+
+    result = get_game(room).nearby(form.get('word'))
+
+    return result

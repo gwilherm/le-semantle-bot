@@ -51,3 +51,11 @@ class Game:
             error_str = 'Je ne connais pas ce mot.'
 
         return Score(error_str, percentile, score)
+
+
+    def nearby(self, word):
+        if word == self.word_to_guess:
+            result = self.top(word, 999)
+        else:
+            result = ''
+        return result
