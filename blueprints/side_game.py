@@ -21,6 +21,13 @@ def convert_namedtuple_to_dict(nt):
     return dict(filter(lambda item: item[1] is not None, nt._asdict().items()))
 
 
+def get_game(room_uuid):
+    try:
+        game = games[room_uuid]
+    except KeyError:
+        abort(404)
+    return game
+
 @side_game.route('/create', methods=['GET'])
 def create():
     room = uuid.uuid4()
@@ -29,14 +36,9 @@ def create():
 
 
 @side_game.route('/<room>/score', methods=['POST'])
-def hello(room):
+def score(room):
     form = request.form
 
-    try:
-        game = games[room]
-    except KeyError:
-        abort(404)
-
-    result = game.score(form.get('word'))
+    result = get_game(room).score(form.get('word'))
 
     return convert_namedtuple_to_dict(result)    
