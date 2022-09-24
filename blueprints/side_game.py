@@ -25,7 +25,7 @@ def convert_namedtuple_to_dict(nt):
 def create():
     room = uuid.uuid4()
     games[str(room)] = Game(lexique, model)
-    return f'"{room}"'
+    return f'"{room}"\n'
 
 
 @side_game.route('/<room>/score', methods=['POST'])
