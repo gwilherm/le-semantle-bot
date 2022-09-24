@@ -51,3 +51,12 @@ def nearby(room):
     result = get_game(room).nearby(form.get('word'))
 
     return result
+
+
+@side_game.route('/<room>/giveup', methods=['GET'])
+def giveup(room):
+    form = request.form
+
+    result = get_game(room).giveup()
+
+    return f'"{result}"\n'

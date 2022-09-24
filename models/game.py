@@ -17,6 +17,7 @@ class Game:
 
 
     def __init__(self, lexique, model):
+        self.in_game = True
         self.lexique = lexique
         self.model = model
         self.last_activity = datetime.now()
@@ -33,22 +34,25 @@ class Game:
         percentile = None
         score = None
 
-        if word is not None and word != '':
-            try:
-                if word == self.word_to_guess:
-                    # with gensim rank of word with itself is 1 and similarity can be 0.99999994
-                    score = 1.0
-                    rank = 0
-                else:
-                    score = float(self.model.similarity(word, self.word_to_guess))
-                    rank = self.model.rank(self.word_to_guess, word)
+        if self.in_game:
+            if word is not None and word != '':
+                try:
+                    if word == self.word_to_guess:
+                        self.in_game = False
+                        # with gensim rank of word with itself is 1 and similarity can be 0.99999994
+                        score = 1.0
+                        rank = 0
+                    else:
+                        score = float(self.model.similarity(word, self.word_to_guess))
+                        rank = self.model.rank(self.word_to_guess, word)
 
-                
-                percentile = 1000 - rank if rank <= 1000 else None
-            except KeyError:
-                error_str = f'Je ne connais pas le mot <i>{word}</i>.'
+                    percentile = 1000 - rank if rank <= 1000 else None
+                except KeyError:
+                    error_str = f'Je ne connais pas le mot <i>{word}</i>.'
+            else:
+                error_str = 'Je ne connais pas ce mot.'
         else:
-            error_str = 'Je ne connais pas ce mot.'
+            error_str = f'Partie terminée, le mot était <i>{self.word_to_guess}</i>.'
 
         return Score(error_str, percentile, score)
 
@@ -59,3 +63,8 @@ class Game:
         else:
             result = ''
         return result
+
+
+    def giveup(self):
+        self.in_game = False
+        return self.word_to_guess
