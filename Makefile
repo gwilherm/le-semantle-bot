@@ -3,17 +3,18 @@
 
 SHELL := /bin/bash
 
-all: dataset
+all: dev
 	@echo "Done. You can run the server with the following command:"
 	@echo "./lesemantleserver.sh" 
 
 dev: venv deps all
 
 venv:
-	python3 -m venv venv
+	virtualenv -p python3 venv
 
 deps:
-	venv/bin/pip3 install -r requirements.txt
+	source venv/bin/activate
+	pip install -r requirements.txt
 
 dataset:
 	@echo "Downloading dataset..."
