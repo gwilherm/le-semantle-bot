@@ -1,4 +1,5 @@
 # Makefile
+# got word2vec model from https://fauconnier.github.io/#data
 
 SHELL := /bin/bash
 
@@ -18,7 +19,7 @@ dataset:
 	@echo "Downloading dataset..."
 	@export APP_DIR=$$(dirname $(abspath $(lastword $(MAKEFILE_LIST)))); \
 	. ./dataset.sh; \
-	cd $${APP_STORAGE}; \
+	mkdir $${APP_STORAGE}; cd $${APP_STORAGE}; \
 	[ -f $${WORD2VEC_MODEL} ]|| wget https://embeddings.net/embeddings/$${WORD2VEC_MODEL}; \
 	[ -f $${LEXIQUE_CSV} ]|| { \
 		wget http://www.lexique.org/databases/$${LEXIQUE}/$${LEXIQUE_ZIP}; \

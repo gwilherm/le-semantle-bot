@@ -1,6 +1,6 @@
 #!/bin/bash
 
-APP_DIR=$(dirname $(readlink -f $0))
+APP_DIR=$(dirname $0)
 source dataset.sh
 
 [ -d ${APP_STORAGE} ]|| mkdir -p ${APP_STORAGE}
@@ -14,5 +14,7 @@ then
 
     flask run
 else # prod
-    gunicorn -b 0.0.0.0:$PORT lesemantleserver:app
+    #gunicorn -b 0.0.0.0:$PORT lesemantleserver:app
+    echo "Le mode production n'est pas disponible"
+    echo "Le mode développement est accessible avec ./lesemantleserver.sh dev"
 fi

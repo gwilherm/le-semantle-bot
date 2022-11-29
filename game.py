@@ -13,7 +13,7 @@ from environ import *
 
 
 Stats = namedtuple('Stats', ['num', 'solvers'])
-Score = namedtuple('Score', ['error', 'num', 'percentile', 'score', 'solvers'])
+Score = namedtuple('Score', ['error', 'num', 'word', 'percentile', 'score', 'solvers'])
 
 
 class Game:
@@ -88,13 +88,13 @@ class Game:
                     rank = self.model.rank(self.word_to_guess, word)
 
                 
-                percentile = 1000 - rank if rank <= 1000 else None
+                percentile = 1000 - rank if rank <= 1000 else 0
             except KeyError:
                 error_str = f'Je ne connais pas le mot <i>{word}</i>.'
         else:
             error_str = 'Je ne connais pas ce mot.'
 
-        return Score(error_str, self.day_num, percentile, score, self.solvers)
+        return Score(error_str, self.day_num, word, percentile, score, self.solvers)
 
 
     def top(self, word, topn):
